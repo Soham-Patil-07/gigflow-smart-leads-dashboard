@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: gigflow-backend-container
+    build: ./backend
+    ports:
+      - "10000:10000"
+    environment:
+      - PORT=10000
+      - JWT_SECRET=super_secret_assignment_fallback_key
+      - MONGO_URI=mongodb+srv://soham:your_password@cluster0.gjej8js.mongodb.net/leads_db?retryWrites=true&w=majority
+    # Restarts the container if it encounters unexpected runtime drops
+    restart: always
+
+  frontend:
+    container_name: gigflow-frontend-container
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:10000
+    depends_on:
+      - backend
+    restart: always
